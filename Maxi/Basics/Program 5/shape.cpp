@@ -18,12 +18,22 @@ class Shape
     int8_t height_;
 };
 
-class triangle : public Shape 
+class PaintCost
+{
+   public:
+    auto get_cost(double area) -> double
+    {
+        return area * 70;
+    }
+};
+
+class triangle : public Shape, public PaintCost
 {
     public:
     auto get_area() -> int32_t
     {
         return (0.5 * (width_ * height_));
+        
     }
 };
 
@@ -34,7 +44,11 @@ auto main () -> int
     rect.set_width(5);
     rect.set_height(7);
 
+    double area = rect.get_area();
+
     std::cout << "Area: " << rect.get_area() << std::endl;
+
+    std::cout << "Paint costs: " << rect.get_cost(area) << "$" << std::endl;
 
     return 0;
 }
