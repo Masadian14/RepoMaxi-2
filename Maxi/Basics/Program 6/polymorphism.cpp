@@ -1,10 +1,15 @@
 #include <cstdint>
 #include <iostream> 
 #include <string>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <memory>
 
 class Animal
 {
-
+    public:
+    virtual void make_noise() const = 0;
 };
 
 class bird;
@@ -23,6 +28,11 @@ class cat : public Animal
         std::cout << "Katzenvogel" << std::endl;
     }
 
+    void make_noise() const override 
+    {
+        std::cout<<"miau"<<std::endl;
+    }
+
 };
 
 class bird : public Animal
@@ -38,20 +48,31 @@ class bird : public Animal
     {
         std::cout << "Vogelkatze" << std::endl;
     }
+
+    void make_noise() const override
+    {
+        std::cout << "kukuk" << std::endl;
+    }
 };
 
 auto main() -> int
 {
-    cat Paul;
-    cat Marius;
-    bird Sultan;
-    bird Luca;
+    std::vector<std::shared_ptr<Animal>> animals;
 
-    Paul + Marius;
-    Paul + Sultan;
-    Sultan + Luca;
-    Sultan + Marius;
+    std::srand(std::time(nullptr));
 
+    for (int i = 0; i < 10; ++i) {
+        if (std::rand() % 2 == 0) {
+            animals.push_back(std::make_shared<cat>());
+        } else {
+            animals.push_back(std::make_shared<bird>());
+        }
+    }
+
+    for (auto &itr : animals)
+    {
+        itr->make_noise();
+    }
     return 0;
 
 }
